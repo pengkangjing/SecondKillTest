@@ -16,21 +16,25 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class RabbitMQSender implements RabbitTemplate.ConfirmCallback{
+public class RabbitMQSender implements RabbitTemplate.ConfirmCallback{   //实现确认回调接口
 	
 	private static final Logger logger = LoggerFactory.getLogger(RabbitMQSender.class);
 	
+	
+	
 	@Autowired
-	private RabbitTemplate rabbitTemplate;
+	public RabbitTemplate rabbitTemplate;
+	
+	
 	
 	public void send(String message){
-		rabbitTemplate.setConfirmCallback(this);
-		CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
-		rabbitTemplate.convertAndSend("seckillExchange","seckillRoutingKey",message,correlationData);
-		
+		rabbitTemplate.setConfirmCallback(this);    //设置回调接口
+		CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());  //版本号
+		rabbitTemplate.convertAndSend("secondKillExchange","secondKillRoutingKey",message,correlationData);   //发送消息
+		                                    
 	}
 	@Override
-	public void confirm(CorrelationData correlationData, boolean ack,String cause){
+	public void confirm(CorrelationData correlationData, boolean ack,String cause){ //实现接口
 		
 		logger.info("callback confirm :"+correlationData.getId());
 		
@@ -43,8 +47,8 @@ public class RabbitMQSender implements RabbitTemplate.ConfirmCallback{
 			
 			logger.info("cause:"+cause);
 		}
-		
 	}
+	
 	
 	
 

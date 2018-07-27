@@ -102,5 +102,11 @@ public class Product {
 		this.creatTime = creatTime;
 	}
 
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", productName=" + productName + ", price=" + price + ", stock=" + stock
+				+ ", version=" + version + ", creatTime=" + creatTime + "]";
+	}
+    
 	
 }

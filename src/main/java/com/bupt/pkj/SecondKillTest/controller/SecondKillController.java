@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,14 +13,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bupt.pkj.SecondKillTest.cache.RedisCacheHandle;
 import com.bupt.pkj.SecondKillTest.common.Message;
 import com.bupt.pkj.SecondKillTest.common.SecondKillEnum;
 import com.bupt.pkj.SecondKillTest.entity.Person;
 import com.bupt.pkj.SecondKillTest.entity.Product;
+import com.bupt.pkj.SecondKillTest.entity.Record;
 import com.bupt.pkj.SecondKillTest.entity.User;
 import com.bupt.pkj.SecondKillTest.service.SecondKillService;
 import com.bupt.pkj.SecondKillTest.web.req.SecondKillRequest;
 import com.bupt.pkj.SecondKillTest.web.vo.SecondKillResponse;
+
+import redis.clients.jedis.Jedis;
 
 @RequestMapping("/SecondKill")
 @RestController
@@ -123,11 +128,10 @@ public class SecondKillController {
 	
 	@RequestMapping(value = "/getAllUser",method = RequestMethod.GET)
 	@ResponseBody
-	public List<Product> getAllUser(){
+	public List<User> getAllUser(){
 		
-		//List<User> user = secondKillService.getAllUser();
-		List<Product> product = secondKillService.getAllProduct();
-		return product;
+		List<User> user = secondKillService.getAllUser();
+		return user;
 	} 
 	
 	@RequestMapping(value = "/getAllProduct",method = RequestMethod.GET)
@@ -137,6 +141,14 @@ public class SecondKillController {
 		List<Product> product = secondKillService.getAllProduct();
 		
 		return product;
+	} 
+	
+	@RequestMapping(value = "/getAllRecord",method = RequestMethod.GET)
+	@ResponseBody
+	public List<Record> getAllRecord(){
+		
+		List<Record> record = secondKillService.getAllRecord();
+		return record;
 	} 
 	
 	@RequestMapping(value = "/getWelcome",method = RequestMethod.GET)
@@ -157,5 +169,12 @@ public class SecondKillController {
 	public Person testObjectt(@RequestBody Person person){
         person.setName("彭康晶");
 		return person;
+	}
+	
+	@RequestMapping(value="/flushDB",method = RequestMethod.GET)
+	@ResponseBody
+	public String flushDB(){
+	
+		return secondKillService.flushDB();
 	}
 }

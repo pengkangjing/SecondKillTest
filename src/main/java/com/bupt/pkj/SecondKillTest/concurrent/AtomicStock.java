@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import com.bupt.pkj.SecondKillTest.mapper.SecondKillMapper;
 
 @Component
-public class AtomicStock {
+public class AtomicStock {                                                 //原子库存工厂
 	private AtomicInteger samsungInteger = new AtomicInteger();
 	private AtomicInteger huaweiInteger = new AtomicInteger();
 	private AtomicInteger xiaomiInteger = new AtomicInteger();
@@ -24,14 +24,14 @@ public class AtomicStock {
 	private SecondKillMapper secondKillMapper; 
 	
 	@PostConstruct
-	public void initAtomicInteger(){
+	public void initAtomicInteger(){                                         //初始化所有商品的原子类 库存
 		List<Product> productList = secondKillMapper.getAllProduct();
 		for(Product product : productList){
-			getAtomicInteger(product.getProductName()).set(product.getStock());
+			getAtomicInteger(product.getProductName()).set(product.getStock());     
 		}
 		
 	}
-	public AtomicInteger getAtomicInteger(String productName){
+	public AtomicInteger getAtomicInteger(String productName){              //得到 对应商品名称 的商品库存原子类
 		AtomicInteger ai = null;
 		if(productName!=null&&!productName.isEmpty()){
 			switch (productName){

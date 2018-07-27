@@ -14,10 +14,11 @@ public interface SecondKillMapper {
     
 	List<User> getAllUser();
 	
-	User getUserById(Integer id);
-	
-	
 	List<Product> getAllProduct();
+	
+	List<Record> getAllRecord();
+	
+	User getUserById(Integer id);
 	
 	Product getProductById(Integer id);
 	
@@ -27,7 +28,9 @@ public interface SecondKillMapper {
 	
 	boolean insertRecord(Record record);
 	
-	boolean updateByAsynPattern(Product product);
+	boolean updateByAsynPattern(Integer id);
+
+	
 
 	
 	

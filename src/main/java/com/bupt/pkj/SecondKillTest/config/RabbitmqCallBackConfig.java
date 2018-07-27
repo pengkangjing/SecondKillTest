@@ -1,12 +1,16 @@
 package com.bupt.pkj.SecondKillTest.config;
 
 import org.slf4j.Logger;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.*;
 
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -91,5 +95,15 @@ public class RabbitmqCallBackConfig {
     public Binding binding() {
         return BindingBuilder.bind(queue()).to(defaultExchange()).with(routingKey);
     }
-
+    
+    @Bean 
+    public RabbitAdmin admin(@Qualifier("initConnectionFactory") ConnectionFactory connectionFactory){
+    	RabbitAdmin admin = new RabbitAdmin(connectionFactory);
+    	admin.declareQueue(queue());
+    	admin.declareExchange(defaultExchange());
+    	admin.declareBinding(binding() );
+		return admin;
+    } 
+    
+   
 }

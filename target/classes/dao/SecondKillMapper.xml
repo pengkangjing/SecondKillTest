@@ -30,14 +30,18 @@
 	<select id="getAllProduct" resultType="com.bupt.pkj.SecondKillTest.entity.Product">
 		select * from product
 	</select>
+	
+	<select id="getAllRecord" resultType="com.bupt.pkj.SecondKillTest.entity.Record">
+		select * from Record
+	</select>
 
 	<select id="getProductById" resultType="com.bupt.pkj.SecondKillTest.entity.Product">
 		select * from product WHERE id=#{id}
 	</select>
 
 	<insert id="insertRecord" useGeneratedKeys="true" keyProperty="id">
-		insert into record(userId, productId, state, stateInfo, createTime)
-			values(#{user.id}, #{product.id}, #{state}, #{stateInfo}, #{createTime})
+		insert into record(userId, userName, productId, productName, state, stateInfo, createTime)
+			values(#{userId}, #{userName}, #{productId}, #{productName}, #{state}, #{stateInfo}, #{createTime})
 	</insert>
 
 </mapper>
